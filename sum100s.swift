@@ -14,29 +14,16 @@
 // transistorized high speed computer", "which began life in 1955 as an NSA project
 // called SOLO to build a transistorized version of the UNIVAC 1103".
 //
-// Running it 100000 times on a Mac M1:
-//
-//    % swiftc -O main.swift
-//    % time ./main >/dev/null
-//    ./main > /dev/null  13.43s user 0.02s system 98% cpu 13.604 total
-//
-// So each run took 134 us, 1/3 of a million times faster. Or 1.3 million times
-// faster running on the 4 fast cores:
-//
-//    % time ./main >/dev/null&; ./main >/dev/null&; ./main >/dev/null&; ./main >/dev/null; wait
-//    [1] 23334
-//    [2] 23335
-//    [3] 23337
-//    [2]  - done       ./main > /dev/null
-//    ./main > /dev/null  14.37s user 0.02s system 99% cpu 14.403 total
+// Running it 100000 times on a Mac M1 takes 13.43s, and on 4 cores at once
+// takes 14.37s, or 1.3 million times faster than the Philco.
 
 import Foundation
 
 func solveSum(_ target: Int, ascending: Bool) {
     
-    enum Symbol {
+    enum Symbol: Int {
+        case plus = 0
         case minus
-        case plus
         case none
     }
 
@@ -56,12 +43,12 @@ func solveSum(_ target: Int, ascending: Bool) {
         for i in 0..<8 {
             let digit = ascending ? i + 2 : 8 - i
             let symbol = symbols[i]
-            if symbol == 2 {
+            if symbol == Symbol.none.rawValue {
                 // no symbol: just shift and accumulate digit
                 digits = 10*digits + digit
             } else {
                 // symbol: apply previous symbol, then save current one
-                if (prevSymbol == 0) {
+                if (prevSymbol == Symbol.plus.rawValue) {
                     sum += digits
                 } else {
                     sum -= digits
@@ -72,7 +59,7 @@ func solveSum(_ target: Int, ascending: Bool) {
         }
 
         // apply final operation
-        if (prevSymbol == 0) {
+        if (prevSymbol == Symbol.plus.rawValue) {
             sum += digits
         } else {
             sum -= digits
@@ -83,9 +70,9 @@ func solveSum(_ target: Int, ascending: Bool) {
             var nSigns = 0
             for i in 0...7 {
                 let symbol = symbols[i]
-                if symbol == 0 {
+                if symbol == Symbol.plus.rawValue {
                     nSigns += 1
-                } else if symbol == 1 {
+                } else if symbol == Symbol.minus.rawValue {
                     nSigns += 1
                 }
             }
@@ -118,9 +105,9 @@ func solveSum(_ target: Int, ascending: Bool) {
         for i in 0...7 {
             s.append(String(ascending ? i+1 : 9-i))
             let symbol = symbols[i]
-            if symbol == 0 {
+            if symbol == Symbol.plus.rawValue {
                 s.append("+")
-            } else if symbol == 1 {
+            } else if symbol == Symbol.minus.rawValue {
                 s.append("-")
             }
         }
