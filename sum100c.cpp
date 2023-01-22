@@ -17,7 +17,7 @@
 #include <iostream>
 #include <vector>
 
-enum Symbol {minus, plus, none};
+enum Symbol {plus, minus, none};
 
 struct Solution {
     std::vector<int> symbols;
@@ -37,12 +37,12 @@ void solveSum(int target, bool ascending) {
         for (int i = 0; i < 8; i++) {
             int digit = ascending ? i + 2 : 8 - i;
             int symbol = symbols[i];
-            if (symbol == 2) {
+            if (symbol == none) {
                 // no symbol: just shift and accumulate digit
                 digits = 10*digits + digit;
             } else {
                 // symbol: apply previous symbol, then save current one
-                if (prevSymbol == 0) {
+                if (prevSymbol == plus) {
                     sum += digits;
                 } else {
                     sum -= digits;
@@ -53,7 +53,7 @@ void solveSum(int target, bool ascending) {
         }
 
         // apply final operation
-        if (prevSymbol == 0) {
+        if (prevSymbol == plus) {
             sum += digits;
         } else {
             sum -= digits;
@@ -64,9 +64,9 @@ void solveSum(int target, bool ascending) {
             int nSigns = 0;
             for (int i = 0; i < 8; i++) {
                 int symbol = symbols[i];
-                if (symbol == 0) {
+                if (symbol == plus) {
                     nSigns += 1;
-                } else if (symbol == 1) {
+                } else if (symbol == minus) {
                     nSigns += 1;
                 }
             }
@@ -83,10 +83,10 @@ void solveSum(int target, bool ascending) {
             }
         }
     }
-    std::cout << "\nSOLUTIONS FOR " << (ascending ? "A" : "DE") << "SCENDING SEQUENCE\n\n";
+    std::cout << "\nSOLUTIONS FOR " << (ascending ? "A" : "DE") << "SCENDING SEQUENCE\n\n\n";
     std::cout << "                                    NUMBER OF" << std::endl;
     std::cout << "                                  PLUS OR MINUS" << std::endl;
-    std::cout << "      SOLUTION                        SIGNS\n";
+    std::cout << "      SOLUTION                        SIGNS\n\n";
 
     std::sort(solutions.begin(), solutions.end(), [](Solution a, Solution b) {
         return b.nSigns > a.nSigns;
@@ -98,9 +98,9 @@ void solveSum(int target, bool ascending) {
         for (int i = 0; i < 8; i++) {
             s.append(std::to_string(ascending ? i+1 : 9-i));
             int symbol = symbols[i];
-            if (symbol == 0) {
+            if (symbol == plus) {
                 s.append("+");
-            } else if (symbol == 1) {
+            } else if (symbol == minus) {
                 s.append("-");
             }
         }
