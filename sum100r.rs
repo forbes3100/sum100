@@ -1,5 +1,5 @@
 //
-//  sum100r.rust
+//  sum100r.rs
 //
 // Solution to Problem 8 in Mathematical Games, Scientific American, Oct. 1962:
 // "the problem of inserting mathematical signs wherever one likes between the digits
@@ -49,7 +49,7 @@ fn solve_sum(target: i32, ascending: bool) {
                 digits = 10 * digits + digit;
             } else {
                 // symbol: apply previous symbol, then save current one
-                if prev_symbol == 0 {
+                if prev_symbol == Symbol::Plus as i32 {
                     sum += digits as i32;
                 } else {
                     sum -= digits as i32;
@@ -60,7 +60,7 @@ fn solve_sum(target: i32, ascending: bool) {
         }
     
         // apply final operation
-        if prev_symbol == 0 {
+        if prev_symbol == Symbol::Plus as i32 {
             sum += digits as i32;
         } else {
             sum -= digits as i32;
@@ -114,8 +114,8 @@ fn solve_sum(target: i32, ascending: bool) {
 }
 
 enum Symbol {
+    Plus = 0,
     Minus,
-    Plus,
     None,
 }
 
