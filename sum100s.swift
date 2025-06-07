@@ -5,7 +5,7 @@
 //
 // Solution to Problem 8 in Mathematical Games, Scientific American, Oct. 1962:
 // "the problem of inserting mathematical signs wherever one likes between the digits
-// 1, 2, 3, 4, 5, 6, 7, 8, 9 to make the ex­pression equal 100". And also the problem
+// 1, 2, 3, 4, 5, 6, 7, 8, 9 to make the expression equal 100". And also the problem
 // with the digits in reverse.
 //
 // The output matches that given by Mark Resnick in his letter to the editor, Jan. 1963,
